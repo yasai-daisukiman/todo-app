@@ -1,0 +1,17 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:react/recommended",
+    "next/core-web-vitals"
+  ],
+  "rules": {
+    "no-unused-vars": "off", // 型定義上での未使用変数エラー回避
+    "semi": ["error"], // セミコロン必須
+    "no-var": "error", // var禁止
+    "quotes": ["error", "single"], // シングルコーテーションのみ可
+    "indent": ["error", 2] // インデントは半角2個分のみ
+  },
+  "root": true
+}
