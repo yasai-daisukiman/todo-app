@@ -8,14 +8,14 @@ import { getFirestore } from 'firebase/firestore';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: 'AIzaSyAYJPKNexkigQl0GGMMN4wPzlvqAvbnFoI',
-  authDomain: 'shadcn-app.firebaseapp.com',
-  databaseURL: 'https://shadcn-app-default-rtdb.firebaseio.com',
+  apiKey: process.env.NEXT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.NEXT_APP_FIREBASE_DATABASE_URL,
   projectId: 'shadcn-app',
-  storageBucket: 'shadcn-app.appspot.com',
-  messagingSenderId: '849338940380',
-  appId: '1:849338940380:web:31bc3053980ad3177cad19',
-  measurementId: 'G-7JGCFB699Z',
+  storageBucket: process.env.NEXT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.NEXT_APP_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
