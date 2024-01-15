@@ -9,6 +9,12 @@ import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 
 type ToDoProps = {
   todo: TaskProps;
@@ -66,9 +72,12 @@ export const ViewToDo = ({ todo }: ToDoProps) => {
           />
         </form>
       ) : (
-        <span className=' font-bold  pl-4 flex flex-col justify-center'>
-          {todo.title}
-        </span>
+        <Accordion type='single' collapsible className='collapsible font-bold  pl-4'>
+          <AccordionItem value='item-1'>
+            <AccordionTrigger>{todo.title}</AccordionTrigger>
+            <AccordionContent className=' font-normal '>{todo.desc}</AccordionContent>
+          </AccordionItem>
+        </Accordion>
       )}
       <div>
         {isEditing ? (
