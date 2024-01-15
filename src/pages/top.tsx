@@ -6,13 +6,16 @@ const TopPage = () => {
   return (
     <>
       <Layout>
-        <main className=' flex flex-col items-center justify-center'>
-          <h1 className=' '>ToDoリスト</h1>
-          <div className='w-full max-w-xl'>
-            <InputTask />
-            <ToDoList />
+        <div className='flex flex-row justify-center'>
+          <div className='flex flex-row gap-8 w-5/6'>
+            <div className='w-1/2 '>
+              <InputTask />
+            </div>
+            <div className='w-1/2 h-96'>
+              <ToDoList />
+            </div>
           </div>
-        </main>
+        </div>
       </Layout>
     </>
   );
