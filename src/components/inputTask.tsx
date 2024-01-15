@@ -18,8 +18,11 @@ import { addDoc, collection } from 'firebase/firestore';
 import { db } from '@/firebase/firebase';
 
 const formSchema = z.object({
-  title: z.string().min(0, {
-    message: 'Title must be at least 2 characters.',
+  title: z.string().min(1, {
+    message: '*Required',
+  }),
+  desc: z.string().min(1, {
+    message: '*Required',
   }),
 });
 
@@ -29,13 +32,14 @@ export const InputTask = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: '',
+      desc: '',
     },
   });
 
-  const addDocument = async (title: string) => {
+  const addDocument = async (title: string, desc: string) => {
     const docData = {
       title: title,
-      detail: 'test',
+      desc: desc,
     };
     try {
       const docRef = await addDoc(collection(db, 'todos'), docData);
@@ -47,8 +51,8 @@ export const InputTask = () => {
   };
 
   const handleSubmit = () => {
-    const { title } = form.getValues(); // フォームからタイトルを取得
-    addDocument(title); // 取得したタイトルを使用して addDocument を呼び出す
+    const { title, desc } = form.getValues(); // フォームからタイトルを取得
+    addDocument(title, desc); // 取得したタイトルを使用して addDocument を呼び出す
   };
 
   return (
@@ -63,6 +67,24 @@ export const InputTask = () => {
                 <FormLabel>Title</FormLabel>
                 <FormControl>
                   <Input className='w-full' placeholder='input title...' {...field} />
+                </FormControl>
+                {/* <FormDescription>This is your public display name.</FormDescription> */}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='desc'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Input
+                    className='w-full'
+                    placeholder='input description...'
+                    {...field}
+                  />
                 </FormControl>
                 {/* <FormDescription>This is your public display name.</FormDescription> */}
                 <FormMessage />
