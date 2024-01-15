@@ -3,6 +3,7 @@ import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '@/firebase/firebase';
 import { ViewToDo } from './ViewToDo';
 import { TaskProps } from '@/types/TodoList';
+import { ScrollArea } from './ui/scroll-area';
 
 export const ToDoList = () => {
   const [todos, setTodos] = useState<TaskProps[]>();
@@ -20,11 +21,13 @@ export const ToDoList = () => {
 
   return (
     <>
-      <ul>
-        {todos?.map((todo) => (
-          <ViewToDo key={todo.id} todo={todo} />
-        ))}
-      </ul>
+      <ScrollArea className='h-full border border-primary rounded-md'>
+        <ul className='px-4 py-2'>
+          {todos?.map((todo) => (
+            <ViewToDo key={todo.id} todo={todo} />
+          ))}
+        </ul>
+      </ScrollArea>
     </>
   );
 };

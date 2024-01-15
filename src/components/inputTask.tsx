@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from './ui/button';
 import { addDoc, collection } from 'firebase/firestore';
 import { db } from '@/firebase/firebase';
+import { IoIosAddCircleOutline } from 'react-icons/io';
 
 const formSchema = z.object({
   title: z.string().min(1, {
@@ -93,6 +94,7 @@ export const InputTask = () => {
           />
           <Button className='my-2 w-full ' type='submit'>
             Add
+            <IoIosAddCircleOutline className=' pt-0.5 size-5 ' />
           </Button>
         </form>
       </Form>

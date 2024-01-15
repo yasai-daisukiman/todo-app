@@ -15,6 +15,9 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import { CiEdit } from 'react-icons/ci';
+import { FaCheck } from 'react-icons/fa';
+import { MdDeleteOutline } from 'react-icons/md';
 
 type ToDoProps = {
   todo: TaskProps;
@@ -60,11 +63,14 @@ export const ViewToDo = ({ todo }: ToDoProps) => {
   };
 
   return (
-    <li key={todo.id} className='flex justify-between border-l-4 border-primary my-6'>
+    <li
+      key={todo.id}
+      className='flex flex-row max-w-full justify-center my-2 collapsible font-bold gap-4'
+    >
       {isEditing ? (
-        <form onSubmit={form.handleSubmit(handleSave)}>
+        <form onSubmit={form.handleSubmit(handleSave)} className='w-2/3'>
           <Input
-            className='ml-2 py-1 px-2 font-bold font-xl rouded border-primary border'
+            className=' px-2 border border-primary rounded-md w-full'
             value={newTitle}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setNewTitle(e.target.value);
@@ -72,24 +78,30 @@ export const ViewToDo = ({ todo }: ToDoProps) => {
           />
         </form>
       ) : (
-        <Accordion type='single' collapsible className='collapsible font-bold  pl-4'>
+        <Accordion
+          type='multiple'
+          className='flex flex-col w-2/3 border rounded-md px-2 '
+        >
           <AccordionItem value='item-1'>
             <AccordionTrigger>{todo.title}</AccordionTrigger>
             <AccordionContent className=' font-normal '>{todo.desc}</AccordionContent>
           </AccordionItem>
         </Accordion>
       )}
-      <div>
+
+      <div className='flex flex-row items-center w-1/3'>
         {isEditing ? (
-          <Button className='mr-2' onClick={handleSave}>
-            save
+          <Button size='icon' className='mr-2 ' onClick={handleSave}>
+            <FaCheck />
           </Button>
         ) : (
-          <Button className='mr-2' onClick={handleEdit}>
-            edit
+          <Button size='icon' className='mr-2' onClick={handleEdit}>
+            <CiEdit className=' size-6' />
           </Button>
         )}
-        <Button onClick={handleDelete}>delete</Button>
+        <Button size='icon' onClick={handleDelete}>
+          <MdDeleteOutline className=' size-5' />
+        </Button>
       </div>
     </li>
   );
