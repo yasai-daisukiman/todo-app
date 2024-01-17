@@ -22,8 +22,8 @@ const formSchema = z.object({
   title: z.string().min(1, {
     message: '*Required',
   }),
-  desc: z.string().min(1, {
-    message: '*Required',
+  desc: z.string().min(0, {
+    message: '',
   }),
 });
 
@@ -59,7 +59,7 @@ export const InputTask = () => {
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-4 w-full y-4'>
+        <form onSubmit={form.handleSubmit(handleSubmit)} className='y-4 w-full space-y-4'>
           <FormField
             control={form.control}
             name='title'
@@ -94,7 +94,7 @@ export const InputTask = () => {
           />
           <Button className='my-2 w-full ' type='submit'>
             Add
-            <IoIosAddCircleOutline className=' pt-0.5 size-5 ' />
+            <IoIosAddCircleOutline className=' size-5 pt-0.5 ' />
           </Button>
         </form>
       </Form>
