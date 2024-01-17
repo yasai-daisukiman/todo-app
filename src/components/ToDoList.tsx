@@ -13,7 +13,7 @@ export const ToDoList = () => {
       const collectionRef = collection(db, 'todos');
 
       onSnapshot(collectionRef, (todo) => {
-        setTodos(todo.docs.map((doc) => ({ ...doc.data(), id: doc.id } as TaskProps)));
+        setTodos(todo.docs.map((doc) => ({ ...doc.data(), id: doc.id }) as TaskProps));
       });
     };
     getData();
@@ -21,11 +21,9 @@ export const ToDoList = () => {
 
   return (
     <>
-      <ScrollArea className='h-full border border-primary rounded-md'>
+      <ScrollArea className='h-full rounded-md border border-primary'>
         <ul className='px-4 py-2'>
-          {todos?.map((todo) => (
-            <ViewToDo key={todo.id} todo={todo} />
-          ))}
+          {todos?.map((todo) => <ViewToDo key={todo.id} todo={todo} />)}
         </ul>
       </ScrollArea>
     </>

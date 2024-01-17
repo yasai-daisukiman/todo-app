@@ -15,6 +15,17 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { CiEdit } from 'react-icons/ci';
 import { FaCheck } from 'react-icons/fa';
 import { MdDeleteOutline } from 'react-icons/md';
@@ -63,33 +74,31 @@ export const ViewToDo = ({ todo }: ToDoProps) => {
   };
 
   return (
-    <li
-      key={todo.id}
-      className='flex flex-row max-w-full justify-center my-2 collapsible font-bold gap-4'
-    >
-      {isEditing ? (
-        <form onSubmit={form.handleSubmit(handleSave)} className='w-2/3'>
-          <Input
-            className=' px-2 border border-primary rounded-md w-full'
-            value={newTitle}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-              setNewTitle(e.target.value);
-            }}
-          />
-        </form>
-      ) : (
-        <Accordion
-          type='multiple'
-          className='flex flex-col w-2/3 border rounded-md px-2 '
-        >
-          <AccordionItem value='item-1'>
-            <AccordionTrigger>{todo.title}</AccordionTrigger>
-            <AccordionContent className=' font-normal '>{todo.desc}</AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      )}
-
-      <div className='flex flex-row items-center w-1/3'>
+    <li key={todo.id} className='flex w-full flex-row gap-4'>
+      <div className='collapsible my-2 w-4/5 font-bold'>
+        {isEditing ? (
+          <form onSubmit={form.handleSubmit(handleSave)} className=''>
+            <Input
+              className='w-full rounded-md border border-primary px-2'
+              value={newTitle}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setNewTitle(e.target.value);
+              }}
+            />
+          </form>
+        ) : (
+          <Accordion
+            type='multiple'
+            className='flex w-full flex-col rounded-md border px-2 '
+          >
+            <AccordionItem value='item-1'>
+              <AccordionTrigger>{todo.title}</AccordionTrigger>
+              <AccordionContent className=' font-normal '>{todo.desc}</AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        )}
+      </div>
+      <div className='flex w-1/5 flex-row items-center justify-center'>
         {isEditing ? (
           <Button size='icon' className='mr-2 ' onClick={handleSave}>
             <FaCheck />
@@ -99,9 +108,26 @@ export const ViewToDo = ({ todo }: ToDoProps) => {
             <CiEdit className=' size-6' />
           </Button>
         )}
-        <Button size='icon' onClick={handleDelete}>
-          <MdDeleteOutline className=' size-5' />
-        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button size='icon'>
+              <MdDeleteOutline className=' size-6' />
+            </Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your account
+                and remove your data from our servers.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete}>Continue</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </li>
   );
