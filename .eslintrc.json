@@ -6,6 +6,10 @@
     "plugin:react/recommended",
     "next/core-web-vitals"
   ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "rules": {
     "no-unused-vars": "off", // 型定義上での未使用変数エラー回避
     "semi": ["error"], // セミコロン必須
