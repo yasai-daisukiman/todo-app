@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { useEffect, useState } from 'react';
 import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '@/firebase/firebase';
@@ -9,11 +12,19 @@ export const ToDoList = () => {
   const [todos, setTodos] = useState<TaskProps[]>();
 
   useEffect(() => {
-    const getData = async () => {
+    const getData = () => {
       const collectionRef = collection(db, 'todos');
 
       onSnapshot(collectionRef, (todo) => {
-        setTodos(todo.docs.map((doc) => ({ ...doc.data(), id: doc.id }) as TaskProps));
+        const data = todo.docs.map(
+          (doc) =>
+            ({
+              ...doc.data(),
+              id: doc.id,
+              date: doc.data().date.toDate(),
+            }) as unknown as TaskProps,
+        );
+        setTodos(data);
       });
     };
     getData();

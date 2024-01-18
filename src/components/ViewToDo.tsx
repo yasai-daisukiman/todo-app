@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 'use client';
 
 import { db } from '@/firebase/firebase';
@@ -29,27 +30,30 @@ import {
 import { CiEdit } from 'react-icons/ci';
 import { FaCheck } from 'react-icons/fa';
 import { MdDeleteOutline } from 'react-icons/md';
+import dayjs from 'dayjs';
 
 type ToDoProps = {
   todo: TaskProps;
 };
 
 const formSchema = z.object({
-  title: z.string().min(0, {}),
+  newTitle: z.string().min(1, {
+    message: '*Required',
+  }),
 });
 
 export const ViewToDo = ({ todo }: ToDoProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(todo.title);
-
+  const date = dayjs(todo.date).format('YYYY/MM/DD');
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: todo.title,
+      newTitle: todo.title,
     },
   });
 
-  const handleEdit = async () => {
+  const handleEdit = () => {
     setIsEditing(true);
   };
 
@@ -77,7 +81,7 @@ export const ViewToDo = ({ todo }: ToDoProps) => {
     <li key={todo.id} className='flex w-full flex-row gap-4'>
       <div className='collapsible my-2 w-4/5 font-bold'>
         {isEditing ? (
-          <form onSubmit={form.handleSubmit(handleSave)} className=''>
+          <form onSubmit={form.handleSubmit(handleSave)}>
             <Input
               className='w-full rounded-md border border-primary px-2'
               value={newTitle}
@@ -89,29 +93,42 @@ export const ViewToDo = ({ todo }: ToDoProps) => {
         ) : (
           <Accordion
             type='multiple'
-            className='flex w-full flex-col rounded-md border px-2 '
+            className='flex w-full flex-col rounded-md border px-2'
           >
             <AccordionItem value='item-1'>
-              <AccordionTrigger>{todo.title}</AccordionTrigger>
-              <AccordionContent className=' font-normal '>{todo.desc}</AccordionContent>
+              <AccordionTrigger>
+                <div>{todo.title}</div>
+              </AccordionTrigger>
+              <AccordionContent className=' font-normal'>
+                <p>{todo.desc}</p>
+                <p>{date}</p>
+              </AccordionContent>
             </AccordionItem>
           </Accordion>
         )}
       </div>
-      <div className='flex w-1/5 flex-row items-center justify-center'>
+      <div className='flex w-1/5 flex-row items-center justify-center gap-2'>
         {isEditing ? (
-          <Button size='icon' className='mr-2 ' onClick={handleSave}>
+          <Button
+            size='icon'
+            className='bg-green-800 hover:bg-green-800'
+            onClick={handleSave}
+          >
             <FaCheck />
           </Button>
         ) : (
-          <Button size='icon' className='mr-2' onClick={handleEdit}>
-            <CiEdit className=' size-6' />
+          <Button
+            size='icon'
+            className='bg-green-600 hover:bg-green-600/70'
+            onClick={handleEdit}
+          >
+            <CiEdit className='size-6' />
           </Button>
         )}
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button size='icon'>
-              <MdDeleteOutline className=' size-6' />
+            <Button size='icon' className='bg-red-600 hover:bg-red-600/70'>
+              <MdDeleteOutline className='size-6' />
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
