@@ -11,7 +11,7 @@ const Home = () => {
           <p className='max-w-md py-4 text-center'>This is a simple todo-app.</p>
         </div>
         <div className='py-4'>
-          <Link href='/login'>
+          <Link href='/top'>
             <Button>Get Sterted</Button>
           </Link>
         </div>
