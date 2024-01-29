@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
@@ -11,8 +10,12 @@ import { ScrollArea } from './ui/scroll-area';
 import dayjs from 'dayjs';
 import { Label } from './ui/label';
 
+type GroupedTasks = {
+  [key: string]: TaskProps[];
+};
+
 export const ToDoList = () => {
-  const [todos, setTodos] = useState({});
+  const [todos, setTodos] = useState<{ [key: string]: TaskProps[] }>({});
 
   //firestoreからリアルタイムでデータ取得
   useEffect(() => {
@@ -25,8 +28,8 @@ export const ToDoList = () => {
             ({
               ...doc.data(),
               id: doc.id,
-              date: dayjs(doc.data().date.toDate()).format('YYYY/MM/DD'),
-            }) as unknown as TaskProps,
+              date: doc.data().date.toDate(),
+            }) as TaskProps,
         );
 
         // フォーマットしたデータをソート
@@ -34,8 +37,8 @@ export const ToDoList = () => {
           (a, b) => dayjs(a.date).unix() - dayjs(b.date).unix(),
         );
 
-        const groupedData = sortedData.reduce((prev, current) => {
-          const date = current.date;
+        const groupedData = sortedData.reduce<GroupedTasks>((prev, current) => {
+          const date = dayjs(current.date).format('YYYY/MM/DD');
           prev[date] = prev[date] ? [...prev[date], current] : [current];
           return prev;
         }, {});

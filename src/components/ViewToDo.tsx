@@ -43,6 +43,7 @@ const formSchema = z.object({
 export const ViewToDo = ({ todo }: ToDoProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(todo.title);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
