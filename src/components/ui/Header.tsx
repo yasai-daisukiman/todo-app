@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 'use client';
 import * as React from 'react';
 import Link from 'next/link';
@@ -54,7 +55,7 @@ const components: { title: string; href: string; description: string }[] = [
 
 export const Header = () => {
   return (
-    <div className='py-4 px-10 flex items-center justify-between'>
+    <div className='flex items-center justify-between px-10 py-4'>
       <Link href='/'>
         <Button className='font-medium'>todo-app</Button>
       </Link>

@@ -7,10 +7,17 @@ import { db } from '@/firebase/firebase';
 import { ViewToDo } from './ViewToDo';
 import { TaskProps } from '@/types/TodoList';
 import { ScrollArea } from './ui/scroll-area';
+import dayjs from 'dayjs';
+import { Label } from './ui/label';
+
+type GroupedTasks = {
+  [key: string]: TaskProps[];
+};
 
 export const ToDoList = () => {
-  const [todos, setTodos] = useState<TaskProps[]>();
+  const [todos, setTodos] = useState<{ [key: string]: TaskProps[] }>({});
 
+  //firestoreからリアルタイムでデータ取得
   useEffect(() => {
     const getData = () => {
       const collectionRef = collection(db, 'todos');
@@ -22,9 +29,20 @@ export const ToDoList = () => {
               ...doc.data(),
               id: doc.id,
               date: doc.data().date.toDate(),
-            }) as unknown as TaskProps,
+            }) as TaskProps,
         );
-        setTodos(data);
+
+        // フォーマットしたデータをソート
+        const sortedData = data.sort(
+          (a, b) => dayjs(a.date).unix() - dayjs(b.date).unix(),
+        );
+
+        const groupedData = sortedData.reduce<GroupedTasks>((prev, current) => {
+          const date = dayjs(current.date).format('YYYY/MM/DD');
+          prev[date] = prev[date] ? [...prev[date], current] : [current];
+          return prev;
+        }, {});
+        setTodos(groupedData);
       });
     };
     getData();
@@ -33,9 +51,19 @@ export const ToDoList = () => {
   return (
     <>
       <ScrollArea className='h-full rounded-md border border-primary'>
-        <ul className='px-4 py-2'>
-          {todos?.map((todo) => <ViewToDo key={todo.id} todo={todo} />)}
-        </ul>
+        {/*取得データがないときは"no data"を表示*/}
+        {Object.keys(todos).length === 0 ? (
+          <div className='py-4 text-center font-bold'>no data...😵</div>
+        ) : (
+          Object.keys(todos).map((date) => (
+            <div key={date} className='pt-2'>
+              <Label className='pl-4'>{date}</Label>
+              {todos[date].map((todo: TaskProps) => (
+                <ViewToDo key={todo.id} todo={todo} />
+              ))}
+            </div>
+          ))
+        )}
       </ScrollArea>
     </>
   );
