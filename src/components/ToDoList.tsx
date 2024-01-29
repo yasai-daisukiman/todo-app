@@ -12,7 +12,7 @@ import dayjs from 'dayjs';
 import { Label } from './ui/label';
 
 export const ToDoList = () => {
-  const [groupedData, setGroupedData] = useState({});
+  const [todos, setTodos] = useState({});
 
   //firestoreからリアルタイムでデータ取得
   useEffect(() => {
@@ -39,7 +39,7 @@ export const ToDoList = () => {
           prev[date] = prev[date] ? [...prev[date], current] : [current];
           return prev;
         }, {});
-        setGroupedData(groupedData);
+        setTodos(groupedData);
       });
     };
     getData();
@@ -48,14 +48,19 @@ export const ToDoList = () => {
   return (
     <>
       <ScrollArea className='h-full rounded-md border border-primary'>
-        {Object.keys(groupedData).map((date) => (
-          <div key={date} className='pt-2'>
-            <Label className='pl-4'>{date}</Label>
-            {groupedData[date].map((todo: TaskProps) => (
-              <ViewToDo key={todo.id} todo={todo} />
-            ))}
-          </div>
-        ))}
+        {/*取得データがないときは"no data"を表示*/}
+        {Object.keys(todos).length === 0 ? (
+          <div className='py-4 text-center font-bold'>no data...😵</div>
+        ) : (
+          Object.keys(todos).map((date) => (
+            <div key={date} className='pt-2'>
+              <Label className='pl-4'>{date}</Label>
+              {todos[date].map((todo: TaskProps) => (
+                <ViewToDo key={todo.id} todo={todo} />
+              ))}
+            </div>
+          ))
+        )}
       </ScrollArea>
     </>
   );
