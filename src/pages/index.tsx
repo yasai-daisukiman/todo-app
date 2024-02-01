@@ -12,7 +12,7 @@ const Home = () => {
         </div>
         <div className='py-4'>
           <Link href='/top'>
-            <Button>Get Sterted</Button>
+            <Button>Get Started</Button>
           </Link>
         </div>
       </main>
